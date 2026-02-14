@@ -15,4 +15,9 @@ target_link_libraries(stackl_test stackl)
 add_executable(rational_test rational_test.cpp "rational_test.cpp")
 target_link_libraries(rational_test rational)
 
+
+add_executable(queuea_test "queuea_test.cpp")
+target_link_libraries(queuea_test queuea)
+
 add_test(NAME rational_autotest COMMAND rational_test)
+

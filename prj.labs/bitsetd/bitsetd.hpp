@@ -23,7 +23,7 @@ public:
 
 	void fill(const bool& val);
 
-	int32_t& size() const;
+	int32_t size() const;
 	void resize(const int32_t newsize);
 
 private:
