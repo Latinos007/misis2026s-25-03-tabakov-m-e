@@ -48,7 +48,7 @@ bool QueueA::is_empty() const {
 
 void QueueA::resize(const int64_t& newsize)
 {
-	if (last_ >= newsize) {
+	if (size() >= newsize) {
 		throw std::invalid_argument("New size is too small");
 	}
 	else {
@@ -80,7 +80,7 @@ void QueueA::push(int64_t newelement)
 		data_[++last_] = newelement;
 	}
 	else {
-		resize(capacity_ * 2);
+		resize(size() * 2);
 		data_[++last_] = newelement;
 	}
 }

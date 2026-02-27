@@ -7,13 +7,13 @@ TEST_CASE("push, pop, top, is_empty)") {
 
     CHECK(stack.is_empty() == true);
 
-    SUBCASE("Добавление элемента") {
+    SUBCASE("") {
         stack.push(42);
         CHECK(stack.is_empty() == false);
         CHECK(stack.top() == 42);
     }
 
-    SUBCASE("Добавление и удаление") {
+    SUBCASE("") {
         stack.push(10);
         stack.push(20);
         stack.push(30);
@@ -27,14 +27,14 @@ TEST_CASE("push, pop, top, is_empty)") {
         CHECK(stack.is_empty() == true);
     }
 
-    SUBCASE("Изменение значения через top()") {
+    SUBCASE("") {
         stack.push(100);
         stack.top() = 200;
         CHECK(stack.top() == 200);
     }
 }
 
-TEST_CASE("Очистка стека") {
+TEST_CASE("") {
     StackL stack;
     stack.push(1);
     stack.push(2);
@@ -44,7 +44,7 @@ TEST_CASE("Очистка стека") {
     CHECK(stack.is_empty() == true);
 }
 
-TEST_CASE("Копирование") {
+TEST_CASE("") {
     StackL s1;
     s1.push(10);
     s1.push(20);
