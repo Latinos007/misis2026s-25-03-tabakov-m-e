@@ -24,7 +24,6 @@ BitsetD::BitsetD(const int32_t& setcapacity, const bool& setvalue)
 		}
 		data_[i] = pow(2, setcapacity - (32 * (size_ - 1))) - 1;
 	}
-	
 }
 
 BitsetD::BitsetD(const std::uint64_t mask):
@@ -70,7 +69,6 @@ bool BitsetD::get(const int32_t& idx) const {
 	uint32_t mask = std::pow(2, idx % 32);
 	uint32_t numpart = data_[idx / 32];
 	return bool(mask & numpart);
-
 }
 
 void BitsetD::set(const int32_t& idx, const bool& val) {
@@ -113,6 +111,7 @@ BitsetD& BitsetD::operator&=(const BitsetD& rhs) {
 	for (int i = 0; i < size_; i++) {
 		data_[i] &= rhs.data_[i];
 	}
+	return *this;
 }
 BitsetD& BitsetD::operator|=(const BitsetD& rhs) {
 	if (capacity_ != rhs.capacity_) {
@@ -121,6 +120,7 @@ BitsetD& BitsetD::operator|=(const BitsetD& rhs) {
 	for (int i = 0; i < size_; i++) {
 		data_[i] |= rhs.data_[i];
 	}
+	return *this;
 }
 BitsetD& BitsetD::operator^=(const BitsetD& rhs) {
 	if (capacity_ != rhs.capacity_) {
@@ -129,13 +129,15 @@ BitsetD& BitsetD::operator^=(const BitsetD& rhs) {
 	for (int i = 0; i < size_; i++) {
 		data_[i] ^= rhs.data_[i];
 	}
+	return *this;
 }
 BitsetD& BitsetD::operator<<=(const std::int32_t shift) {
-	/*
-	for (int i = 0; i < size_; i++) {
-		data_[i] <<= shift;
+	BitsetD tempset(capacity_, 0);
+	for (int32_t i = shift; i < capacity_; i++) {
+		tempset.set(i, this->get(i-shift));
 	}
-	*/
+	data_ = tempset.data_;
+	return *this;
 }
 
 void BitsetD::print_bits() const {
