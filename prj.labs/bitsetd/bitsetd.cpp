@@ -131,12 +131,51 @@ BitsetD& BitsetD::operator^=(const BitsetD& rhs) {
 	}
 	return *this;
 }
+
 BitsetD& BitsetD::operator<<=(const std::int32_t shift) {
 	BitsetD tempset(capacity_, 0);
 	for (int32_t i = shift; i < capacity_; i++) {
-		tempset.set(i, this->get(i-shift));
+		tempset.set(i, this->get(i - shift));
 	}
 	data_ = tempset.data_;
+	return *this;
+}
+
+BitsetD& BitsetD::operator>>=(const std::int32_t shift) {
+	BitsetD tempset(capacity_, 0);
+	for (int32_t i = (capacity_-1) - shift; i >= 0; i--) {
+		tempset.set(i, this->get(i + shift));
+	}
+	data_ = tempset.data_;
+	return *this;
+}
+
+BitsetD& BitsetD::shift(const int32_t idx) noexcept {
+	BitsetD tempset(capacity_, 0);
+	if (0 < idx) {
+		int32_t normalized_idx = ((idx % capacity_) != 0) ? idx % capacity_ : idx;
+
+		for (int i = 0; i < normalized_idx; i++) {
+			tempset.set(i, this->get(capacity_ - normalized_idx + i));
+		}
+		for (int i = normalized_idx; i < capacity_; i++) {
+			tempset.set(i, this->get(i- normalized_idx));
+		}
+		data_ = tempset.data_;
+	}
+	else if (0 > idx) {
+		int32_t normalized_idx = -1 * idx;
+		normalized_idx = (normalized_idx % capacity_) ? normalized_idx % capacity_ : normalized_idx;
+
+		for (int i = 0; i < capacity_- normalized_idx; i++) {
+			tempset.set(i, this->get(normalized_idx + i));
+		}
+		for (int i = capacity_- normalized_idx; i < capacity_; i++) {
+			tempset.set(i, this->get(i - capacity_ + normalized_idx));
+		}
+		data_ = tempset.data_;
+	}
+	
 	return *this;
 }
 

@@ -5,8 +5,9 @@
 #include <vector>
 
 int main() {
-	BitsetD v1(19109831);
-	BitsetD v2(19378175);
+	BitsetD v1(9831);
+	BitsetD v2(32);
+	v2.invert();
 	//v.bits_print();
 	//std::cout << std::bitset<32>(v2.data_[1]) << ' ';
 
@@ -16,7 +17,7 @@ int main() {
 	std::cout << std::endl;
 	v2.print_bits();
 
-	v2 <<= 24;
+	v2 = v2.shift(-32);
 	std::cout << std::endl << "operation complete" << std::endl;
 
 	v2.print_bits();
