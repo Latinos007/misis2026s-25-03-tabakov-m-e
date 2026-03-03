@@ -21,6 +21,6 @@ int main() {
 	std::cout << std::endl << "operation complete" << std::endl;
 
 	v2.print_bits();
-	std::cout << std::endl << v2.capacity_ << std::endl;
+	std::cout << std::endl << v2[3];
 
 }

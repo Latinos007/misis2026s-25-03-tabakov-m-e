@@ -47,7 +47,7 @@ BitsetD& BitsetD::operator=(const BitsetD& rhs) {
 	return *this;
 }
 
-int32_t BitsetD::size() const {
+int32_t BitsetD::size() const noexcept{
 	return capacity_;
 }
 
@@ -186,4 +186,34 @@ void BitsetD::print_bits() const {
 	for (int i = capacity_ - 1; i >=0; i--) {
 		std::cout << get(i);
 	}
+}
+
+BitsetD operator<<(const BitsetD& lhs, const std::int32_t shift) {
+	BitsetD x(lhs);
+	x <<= shift;
+	return x;
+}
+
+BitsetD operator>>(const BitsetD& lhs, const std::int32_t shift) {
+	BitsetD x(lhs);
+	x >>= shift;
+	return x;
+}
+
+BitsetD operator&(const BitsetD& lhs, const BitsetD& rhs) {
+	BitsetD x(lhs);
+	x &= rhs;
+	return x;
+}
+
+BitsetD operator|(const BitsetD& lhs, const BitsetD& rhs) {
+	BitsetD x(lhs);
+	x |= rhs;
+	return x;
+}
+
+BitsetD operator^(const BitsetD& lhs, const BitsetD& rhs) {
+	BitsetD x(lhs);
+	x ^= rhs;
+	return x;
 }
