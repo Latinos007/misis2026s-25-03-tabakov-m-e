@@ -1,6 +1,28 @@
 Test project D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/build.check
     Start 1: rational_autotest
-    Start 2: doctest_bitsetd
+    Start 2: doctest_arrayd
+    Start 3: doctest_arrayt
+Could not find executable D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_arrayt.exe
+Looked in the following places:
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_arrayt.exe
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_arrayt.exe.exe
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/Release/doctest_arrayt.exe
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/Release/doctest_arrayt.exe.exe
+Release/D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_arrayt.exe
+Release/D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_arrayt.exe.exe
+1/7 Test #3: doctest_arrayt ...................***Not Run   0.00 sec
+    Start 4: doctest_complex
+Could not find executable D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_complex.exe
+Looked in the following places:
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_complex.exe
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_complex.exe.exe
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/Release/doctest_complex.exe
+D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/Release/doctest_complex.exe.exe
+Release/D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_complex.exe
+Release/D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_complex.exe.exe
+2/7 Test #4: doctest_complex ..................***Not Run   0.00 sec
+    Start 5: doctest_complex_io
+    Start 6: doctest_bitsetd
 Could not find executable D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_bitsetd.exe
 Looked in the following places:
 D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_bitsetd.exe
@@ -9,8 +31,8 @@ D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/Release/d
 D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/Release/doctest_bitsetd.exe.exe
 Release/D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_bitsetd.exe
 Release/D:/projects/misis2026-check/misis2026s-25-03-tabakov-m-e.git/bin.check/doctest_bitsetd.exe.exe
-1/3 Test #2: doctest_bitsetd ..................***Not Run   0.00 sec
-    Start 3: doctest_bitsetd_m
+3/7 Test #6: doctest_bitsetd ..................***Not Run   0.00 sec
+    Start 7: doctest_bitsetd_m
 Could not find executable doctest_bitset_m
 Looked in the following places:
 doctest_bitset_m
@@ -19,13 +41,18 @@ Release/doctest_bitset_m
 Release/doctest_bitset_m.exe
 Release/doctest_bitset_m
 Release/doctest_bitset_m.exe
-2/3 Test #3: doctest_bitsetd_m ................***Not Run   0.00 sec
-3/3 Test #1: rational_autotest ................   Passed    0.12 sec
+4/7 Test #7: doctest_bitsetd_m ................***Not Run   0.00 sec
+5/7 Test #1: rational_autotest ................   Passed    0.16 sec
+6/7 Test #2: doctest_arrayd ...................   Passed    0.10 sec
+7/7 Test #5: doctest_complex_io ...............***Failed    0.04 sec
 
-33% tests passed, 2 tests failed out of 3
+29% tests passed, 5 tests failed out of 7
 
-Total Test time (real) =   0.44 sec
+Total Test time (real) =   0.32 sec
 
 The following tests FAILED:
-	  2 - doctest_bitsetd (Not Run)
-	  3 - doctest_bitsetd_m (Not Run)
+	  3 - doctest_arrayt (Not Run)
+	  4 - doctest_complex (Not Run)
+	  5 - doctest_complex_io (Failed)
+	  6 - doctest_bitsetd (Not Run)
+	  7 - doctest_bitsetd_m (Not Run)
