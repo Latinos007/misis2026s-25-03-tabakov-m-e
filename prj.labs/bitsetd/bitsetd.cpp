@@ -3,48 +3,48 @@
 #include <vector>
 #include <stdexcept>
 #include <cmath>
+#include <cstdint>
 
 //otlado4ka
 #include <iostream>
 
 BitsetD::BitsetD(const int32_t& setcapacity, const bool& setvalue)
 	:capacity_(setcapacity),
-	size_((setcapacity / 32) + 1),
-	data_(0)	
+	data_(0)
 	{
 	if (setcapacity < 0) {
 		throw std::invalid_argument("size can not be negative");
 	}
 
-	data_.resize(size_, 0);
+	data_.resize(setcapacity/32+1, 0);
 	if (1 == setvalue) {
 		int i = 0;
-		for (; i < size_ - 1; i++) {
-			data_[i] = UINT32_MAX;
+		for (; i < data_.size() - 1; i++) {
+			data_[i] = 1u;
 		}
-		data_[i] = pow(2, setcapacity - (32 * (size_ - 1))) - 1;
+		data_[i] = pow(2, setcapacity - (32 * (data_.size() - 1))) - 1;
 	}
 }
 
-BitsetD::BitsetD(const std::uint64_t mask):
-	BitsetD(64,bool(0))
-{
-	capacity_ = std::floor(std::log2(mask)) + 1;
-	data_[0] = mask % uint64_t(std::pow(2, 32));
-	data_[1] = mask / std::pow(2, 32);
+BitsetD::BitsetD(const std::uint64_t mask, const std::int32_t size)
+	: capacity_(size)
+	, data_{ static_cast<uint32_t>(mask),
+			 static_cast<uint32_t>(mask >> 32) } {
 }
 
 BitsetD::BitsetD(const BitsetD& src):
 	capacity_(src.capacity_),
-	size_(src.size_),
 	data_(src.data_)
 {}
 
 BitsetD& BitsetD::operator=(const BitsetD& rhs) {
 	capacity_ = rhs.capacity_;
-	size_ = rhs.size_;
 	data_ = rhs.data_;
 	return *this;
+}
+
+BitsetD& BitsetD::operator=(BitsetD&& src) {
+
 }
 
 int32_t BitsetD::size() const noexcept{
@@ -57,13 +57,12 @@ void BitsetD::resize(const int32_t& newcapacity) {
 	}
 	if (newcapacity > capacity_) {
 		capacity_ = newcapacity;
-		size_ = capacity_ / 32 + 1;
-		data_.resize(size_);
+		data_.resize(capacity_ / 32 + 1);
 	}
 }
 
 bool BitsetD::get(const int32_t& idx) const {
-	if (idx >= capacity_) {
+	if (idx >= capacity_ or idx < 0) {
 		throw std::out_of_range("out of range");
 	}
 	uint32_t mask = std::pow(2, idx % 32);
@@ -72,7 +71,7 @@ bool BitsetD::get(const int32_t& idx) const {
 }
 
 void BitsetD::set(const int32_t& idx, const bool& val) {
-	if (idx >= capacity_) {
+	if (idx >= capacity_ || idx < 0) {
 		throw std::out_of_range("out of range");
 	}
 	uint32_t mask = std::pow(2, idx % 32);
@@ -85,10 +84,12 @@ void BitsetD::set(const int32_t& idx, const bool& val) {
 	}
 }
 
-void BitsetD::invert() noexcept {
+BitsetD& BitsetD::invert() noexcept {
+	BitsetD& lhs(*this);
 	for (int i = 0; i < capacity_; i++) {
-		set(i, !get(i));
+		lhs.set(i, !get(i));
 	}
+	return lhs;
 }
 
 void BitsetD::fill(const bool& val) noexcept {
@@ -108,7 +109,7 @@ BitsetD& BitsetD::operator&=(const BitsetD& rhs) {
 	if (capacity_ != rhs.capacity_) {
 		throw std::invalid_argument("the size of the objects must be the same");
 	}
-	for (int i = 0; i < size_; i++) {
+	for (int i = 0; i < data_.size(); i++) {
 		data_[i] &= rhs.data_[i];
 	}
 	return *this;
@@ -117,7 +118,7 @@ BitsetD& BitsetD::operator|=(const BitsetD& rhs) {
 	if (capacity_ != rhs.capacity_) {
 		throw std::invalid_argument("the size of the objects must be the same");
 	}
-	for (int i = 0; i < size_; i++) {
+	for (int i = 0; i < data_.size(); i++) {
 		data_[i] |= rhs.data_[i];
 	}
 	return *this;
@@ -126,14 +127,14 @@ BitsetD& BitsetD::operator^=(const BitsetD& rhs) {
 	if (capacity_ != rhs.capacity_) {
 		throw std::invalid_argument("the size of the objects must be the same");
 	}
-	for (int i = 0; i < size_; i++) {
+	for (int i = 0; i < data_.size(); i++) {
 		data_[i] ^= rhs.data_[i];
 	}
 	return *this;
 }
 
 BitsetD& BitsetD::operator<<=(const std::int32_t shift) {
-	BitsetD tempset(capacity_, 0);
+	BitsetD tempset(capacity_, false);
 	for (int32_t i = shift; i < capacity_; i++) {
 		tempset.set(i, this->get(i - shift));
 	}
@@ -142,7 +143,7 @@ BitsetD& BitsetD::operator<<=(const std::int32_t shift) {
 }
 
 BitsetD& BitsetD::operator>>=(const std::int32_t shift) {
-	BitsetD tempset(capacity_, 0);
+	BitsetD tempset(capacity_, false);
 	for (int32_t i = (capacity_-1) - shift; i >= 0; i--) {
 		tempset.set(i, this->get(i + shift));
 	}
@@ -151,7 +152,7 @@ BitsetD& BitsetD::operator>>=(const std::int32_t shift) {
 }
 
 BitsetD& BitsetD::shift(const int32_t idx) noexcept {
-	BitsetD tempset(capacity_, 0);
+	BitsetD tempset(capacity_, false);
 	if (0 < idx) {
 		int32_t normalized_idx = ((idx % capacity_) != 0) ? idx % capacity_ : idx;
 
@@ -180,7 +181,7 @@ BitsetD& BitsetD::shift(const int32_t idx) noexcept {
 }
 
 void BitsetD::print_bits() const {
-	if (size_ == 0) {
+	if (data_.size() == 0) {
 		throw std::invalid_argument("size<1");
 	}
 	for (int i = capacity_ - 1; i >=0; i--) {

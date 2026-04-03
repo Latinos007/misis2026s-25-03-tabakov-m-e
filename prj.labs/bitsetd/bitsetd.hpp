@@ -2,16 +2,22 @@
 #ifndef BITSETD_022026
 #define BITSETD_022026
 
+#include <cstdint>
+#include <string>
 #include <vector>
 
 class BitsetD {
 public:
 	BitsetD() = default;
+
 	BitsetD(const BitsetD& src);
+	BitsetD(BitsetD&& src) = default;
+
 	BitsetD(const int32_t& setsize, const bool& setvalue);
-	BitsetD(const std::uint64_t mask);
+	BitsetD(const std::uint64_t mask, const int32_t size);
 
 	BitsetD& operator=(const BitsetD& rhs);
+	BitsetD& operator=(BitsetD&& src) {};
 
 	~BitsetD() = default;
 
@@ -20,9 +26,9 @@ public:
 	void set(const int32_t& idx, const bool& val);
 	bool get(const int32_t& idx) const;
 
-	//operator
+	//operators
 	bool operator==(const BitsetD& rhs) const noexcept;
-	void invert() noexcept;
+	BitsetD& invert() noexcept;
 	void fill(const bool& val) noexcept;
 	BitsetD& shift(const std::int32_t idx) noexcept;
 	BitsetD& operator<<=(const std::int32_t shift);
@@ -35,44 +41,50 @@ public:
 
 private:
 	std::vector<uint32_t> data_;
-	int32_t size_ = 0;
 	int32_t capacity_ = 0;
 
 public:
-	class BitProx {
+	class BitR {
+		friend class BitsetD;
 	public:
-		BitProx() = delete;
-		BitProx(const BitProx&) = delete;
-		~BitProx() = default;
-		BitProx& operator=(const BitProx&) = delete;
-		BitProx(BitsetD& bs, const int32_t idx) : bs_(bs), idx_(idx) {}
-		operator bool() const { return bs_.get(idx_); }
-		void operator=(const bool val) { bs_.set(idx_, val); }
+		operator bool() const noexcept { return val_; }
 	private:
-		BitsetD& bs_;
-		const int32_t idx_ = 0;
-	};
-	class BitProxC {
-	public:
-		BitProxC() = delete;
-		BitProxC(const BitProxC&) = delete;
-		~BitProxC() = default;
-		BitProxC& operator=(const BitProxC&) = delete;
-		BitProxC(const BitsetD& bs, const int32_t idx) : val_(bs.get(idx)) {}
-		operator bool() const { return val_; }
+		BitR() = delete;
+		BitR(const BitR&) = delete;
+		BitR(BitR&&) = delete;
+		BitR(const BitsetD& bs, const int32_t idx) : val_(bs.get(idx)) {}
+		~BitR() = default;
+		BitR& operator=(const BitR&) = delete;
+		BitR& operator=(BitR&&) = delete;
 	private:
 		bool val_ = false;
 	};
 
-	BitProx operator[](const std::int32_t idx) { return BitProx(*this, idx); }
-	BitProxC operator[](const std::int32_t idx) const { return BitProxC(*this, idx); }
+	class BitW {
+		friend class BitsetD;
+	public:
+		operator bool() const noexcept { return bs_.get(idx_); }
+		void operator=(const bool val) noexcept { bs_.set(idx_, val); }
+		void operator=(const BitW& rhs) noexcept { operator=(rhs.operator bool()); }
+		void operator=(BitW&& rhs) noexcept { operator=(rhs.operator bool()); }
+	private:
+		BitW(BitsetD& bs, const int32_t idx) : bs_(bs), idx_(idx) {}
+		BitW() = delete;
+		BitW(const BitW&) = delete;
+		BitW(BitW&&) = delete;
+		~BitW() = default;
+	private:
+		BitsetD& bs_;
+		const int32_t idx_ = 0;
+	};
+
+	BitW operator[](const std::int32_t idx)& { return BitW(*this, idx); }
+	BitR operator[](const std::int32_t idx) const& { return BitR(*this, idx); }
 };
 
 
 inline BitsetD operator~(const BitsetD& rhs) noexcept {
-	BitsetD x(rhs);
-	x.invert();
-	return x;
+	return BitsetD(rhs).invert();
 }
 
 BitsetD operator<<(const BitsetD& lhs, const std::int32_t shift);

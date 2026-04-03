@@ -10,4 +10,5 @@ add_subdirectory(stackl)
 add_subdirectory(stacka)
 
 add_subdirectory(queuea)
-add_subdirectory(queuel)
+
+add_subdirectory(DioStrB)
