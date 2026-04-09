@@ -43,12 +43,12 @@ Release/doctest_bitset_m
 Release/doctest_bitset_m.exe
 4/7 Test #7: doctest_bitsetd_m ................***Not Run   0.00 sec
 5/7 Test #1: rational_autotest ................   Passed    0.17 sec
-6/7 Test #2: doctest_arrayd ...................   Passed    0.11 sec
+6/7 Test #2: doctest_arrayd ...................   Passed    0.10 sec
 7/7 Test #5: doctest_complex_io ...............***Failed    0.04 sec
 
 29% tests passed, 5 tests failed out of 7
 
-Total Test time (real) =   0.36 sec
+Total Test time (real) =   0.31 sec
 
 The following tests FAILED:
 	  3 - doctest_arrayt (Not Run)
