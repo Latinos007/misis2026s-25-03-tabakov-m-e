@@ -4,22 +4,24 @@
 #define HZ
 
 #include <iostream>
+#include <string>
 
 class DioStrB {
 public:
 	DioStrB() = default;
 
 
-	std::istream& readFrom(const std::istream& istrm) {
+	std::istream& readFrom(std::istream& istrm) {}
 
+
+	std::ostream& writeTo(std::ostream& ostrm) {
+		ostrm << val_;
+		val_ = "";
 	}
+	
+	std::string val() { return val_; }
 
-
-	std::ostream& writeTo(std::ostream& ostrm) const {
-
-	}
-//private:
-	//char32_t* val_ = nullptr;
+private:
 	std::string val_;
 };
 
@@ -27,7 +29,7 @@ public:
 
 
 //перегруженные операторы
-std::ostream& operator<<(std::ostream& ostrm, const DioStrB& rhs)
+std::ostream& operator<<(std::ostream& ostrm, DioStrB& rhs)
 {
 	return rhs.writeTo(ostrm);
 }

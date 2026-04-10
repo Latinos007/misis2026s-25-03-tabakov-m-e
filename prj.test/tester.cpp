@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstring>
+#include <fstring>
 
 int main() {
 	char* buffer;
