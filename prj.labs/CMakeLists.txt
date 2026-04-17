@@ -11,4 +11,4 @@ add_subdirectory(bitsetd)
 
 #add_subdirectory(queuea)
 
-add_subdirectory(DioStrB)
+add_subdirectory(dio)

@@ -10,11 +10,14 @@ class DioStrB {
 public:
 	DioStrB() = default;
 
+	bool checks(char& ch) { return 1; }
 
-	std::istream& readFrom(std::istream& istrm) {}
 
+	void readFrom(std::istream& src);
 
-	std::ostream& writeTo(std::ostream& ostrm) {
+	
+
+	void writeTo(std::ostream& ostrm) {
 		ostrm << val_;
 		val_ = "";
 	}
@@ -29,6 +32,7 @@ private:
 
 
 //перегруженные операторы
+/*
 std::ostream& operator<<(std::ostream& ostrm, DioStrB& rhs)
 {
 	return rhs.writeTo(ostrm);
@@ -38,4 +42,5 @@ std::istream& operator>>(std::istream& istrm, DioStrB& rhs)
 {
 	return rhs.readFrom(istrm);
 }
+*/
 #endif
