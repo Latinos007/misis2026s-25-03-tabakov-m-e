@@ -13,19 +13,15 @@ public:
 	bool checks(char& ch) { return 1; }
 
 
-	void readFrom(std::istream& src);
+	std::istream& readFrom(std::istream& src);
 
-	
+	std::ostream& write_to(std::ostream& ostrm);
 
-	void writeTo(std::ostream& ostrm) {
-		ostrm << val_;
-		val_ = "";
-	}
-	
 	std::string val() { return val_; }
 
 private:
 	std::string val_;
+	char mrk_ = 's';
 };
 
 
