@@ -1,8 +1,6 @@
-STAMP: 20260416-122119
+STAMP: 20260423-131938
 ERROR: file prj.labs/arrayt/CMakeLists.txt is absent
 ERROR: file prj.labs/arrayt/arrayt.hpp is absent
-ERROR: file prj.labs/dio/CMakeLists.txt is absent
-ERROR: file prj.labs/dio/dio.hpp is absent
 ERROR: file prj.test/arrayt_test.cpp is absent
 ERROR: file prj.test/dio_test.cpp is absent
 OK: CMake generator successed
