@@ -4,32 +4,39 @@
 #include <stdexcept>
 #include <cmath>
 #include <cstdint>
-
-//otlado4ka
 #include <iostream>
 
-BitsetD::BitsetD(const int32_t& setcapacity, const bool& setvalue)
-	:capacity_(setcapacity),
-	data_(0)
+BitsetD::BitsetD(int32_t size, bool setvalue, bool debug)
+	:data_(0)
 	{
-	if (setcapacity < 0) {
+	if (size < 0) {
 		throw std::invalid_argument("size can not be negative");
 	}
+	capacity_ = size;
+	
+	int32_t num_elements = (size + 31) / 32;
 
-	data_.resize(setcapacity/32+1, 0);
-	if (1 == setvalue) {
-		int i = 0;
-		for (; i < data_.size() - 1; i++) {
-			data_[i] = 1u;
+	if (setvalue) {
+		data_.assign(num_elements, 0xFFFFFFFFu);
+
+		int tail = size % 32;
+		if (tail > 0) {
+			data_.back() &= (1u << tail) - 1;
 		}
-		data_[i] = pow(2, setcapacity - (32 * (data_.size() - 1))) - 1;
+	}
+	else {
+		data_.assign(num_elements, 0);
 	}
 }
 
-BitsetD::BitsetD(const std::uint64_t mask, const std::int32_t size)
+BitsetD::BitsetD(std::uint64_t mask, std::int32_t size)
 	: capacity_(size)
+
 	, data_{ static_cast<uint32_t>(mask),
 			 static_cast<uint32_t>(mask >> 32) } {
+	if (size < 0) {
+		throw std::invalid_argument("size can not be negative");
+	}
 }
 
 BitsetD::BitsetD(const BitsetD& src):
@@ -42,18 +49,19 @@ BitsetD& BitsetD::operator=(const BitsetD& rhs) {
 	data_ = rhs.data_;
 	return *this;
 }
-
+/*
 BitsetD& BitsetD::operator=(BitsetD&& src) {
 
 }
+*/
 
 int32_t BitsetD::size() const noexcept{
 	return capacity_;
 }
 
-void BitsetD::resize(const int32_t& newcapacity) {
+void BitsetD::resize(int32_t newcapacity) {
 	if (newcapacity < capacity_) {
-		throw std::invalid_argument("new size is smaller then old");
+		throw std::invalid_argument("new size is too small");
 	}
 	if (newcapacity > capacity_) {
 		capacity_ = newcapacity;
@@ -182,10 +190,13 @@ BitsetD& BitsetD::shift(const int32_t idx) noexcept {
 
 void BitsetD::print_bits() const {
 	if (data_.size() == 0) {
-		throw std::invalid_argument("size<1");
+		throw std::invalid_argument("size must be greater then zero");
 	}
+	int counter = 0;
 	for (int i = capacity_ - 1; i >=0; i--) {
 		std::cout << get(i);
+		counter++;
+		if (counter % 8 == 0) std::cout << std::endl;
 	}
 }
 
@@ -217,4 +228,42 @@ BitsetD operator^(const BitsetD& lhs, const BitsetD& rhs) {
 	BitsetD x(lhs);
 	x ^= rhs;
 	return x;
+}
+
+//ios binary
+
+std::uint8_t BitsetD::hash_gen(std::vector<uint32_t> msg) {
+	//temp
+	return 0x64;
+}
+
+std::istream& BitsetD::read_from(std::istream& istrm) {
+	char mrk = istrm.get();
+	if (mrk == mrk_) {
+		std::uint32_t size;
+		istrm.read(reinterpret_cast<char*>(&size), sizeof(size));
+		std::cout << size << std::endl;
+		resize(8 * size);
+		fill(0);
+		istrm.read(reinterpret_cast<char*>(data_.data()), size);
+	}
+	else {
+		istrm.setstate(std::ios::badbit);
+	}
+
+	//debug
+	//std::cout << "done" << std::endl;
+
+	return istrm;
+}
+
+std::ostream& BitsetD::write_to(std::ostream& ostrm) {
+	ostrm.put(mrk_);
+
+	uint32_t size = capacity_ / 8;
+	ostrm.write(reinterpret_cast<char*>(&size), sizeof(size));
+	
+	ostrm.write(reinterpret_cast<char*>(data_.data()), size);
+
+	return ostrm;
 }

@@ -7,7 +7,7 @@ std::istream& DioStrB::readFrom(std::istream& src) {
 	char mark = src.get();
 	if (mark == mrk_) {
 		int32_t size;
-		src.read(reinterpret_cast<char*>(&size), sizeof(size);
+		src.read(reinterpret_cast<char*>(&size), sizeof(size));
 		val_.resize(size - 1);
 		src.read(val_.data(), size);
 	}

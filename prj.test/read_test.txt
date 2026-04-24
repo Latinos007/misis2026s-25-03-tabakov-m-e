@@ -1,5 +1,1 @@
-fist line
-fist line
-second line
-test '\|/n/t`
-END!!!0123456789
+s
