@@ -45,7 +45,10 @@ public:
 	BitsetD& operator&=(const BitsetD& rhs);
 	BitsetD& operator|=(const BitsetD& rhs);
 	BitsetD& operator^=(const BitsetD& rhs);
-
+	//преобразование типов
+	explicit operator std::uint32_t() const;
+	explicit operator std::uint64_t() const;
+	
 	//ios binary
 	enum class StrFormat : int32_t {
 		Bin = 1,      ///< суффикс "b0" и разделители по 4 от младших, пример: b0010'0001
@@ -74,7 +77,7 @@ public:
 	void print_bits() const;
 
 
-
+//прокси для обращения через оператор квадратных скобок
 public:
 	class BitR {
 		friend class BitsetD;

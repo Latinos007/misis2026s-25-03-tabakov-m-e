@@ -159,6 +159,20 @@ BitsetD& BitsetD::operator>>=(const std::int32_t shift) {
 	return *this;
 }
 
+explicit BitsetD::operator std::uint32_t() const {
+	if (capacity_ == 0) {
+		throw std::invalid_argument("size must be greater then zero");
+	}
+	return data_[0];
+}
+explicit BitsetD::operator std::uint64_t() const {
+	if (capacity_ == 0) {
+		throw std::invalid_argument("size must be greater then zero");
+	}
+	int64_t result = (data_[1] << 32) + data_[0];
+	return result;
+}
+
 BitsetD& BitsetD::shift(const int32_t idx) noexcept {
 	BitsetD tempset(capacity_, false);
 	if (0 < idx) {
