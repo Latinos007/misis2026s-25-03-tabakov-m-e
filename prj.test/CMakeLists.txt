@@ -28,5 +28,5 @@ target_link_libraries(bitsetd_profiler bitsetd)
 
 add_test(NAME rational_autotest COMMAND rational_test)
 
-add_executable(tester "tester.cpp")
-target_link_libraries(tester bitsetd)
+add_executable(bitsetd_io_test "bitsetd_io_test.cpp")
+target_link_libraries(bitsetd_io_test bitsetd)
